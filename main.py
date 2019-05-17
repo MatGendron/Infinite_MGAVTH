@@ -16,11 +16,27 @@ def Dec_to_Bin(n):
 ##Function that permutes two given values in an array
 
 ##Function that takes an array of binaries and gives the corresponding decimal
+def bin_to_dec(b):
+    res=0
+    temp=8
+    for i in b:
+        res+=(i*temp)
+        temp=temp//2
+    return res
 
-##Function that builds a 16x16 array of 0s 
+##print(bin_to_dec([1,0,1,1]))
+
+##Function that builds a 16x16 array of 0s
+def zero_matrix():
+    res=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    for i in range(16):
+        res[i]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    return res
+
+##print(zero_matrix())
 
 list_theta=[]
 for i in range(16):
     list_theta.append(Dec_to_Bin(i))
 
-print(list_theta)
+##print(list_theta)

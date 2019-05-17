@@ -14,13 +14,16 @@ def Dec_to_Bin(n):
     return tab_bin
 
 ##Function that permutes two given values in an array
+##theta is the array where the permutation occurs
+##permutation is the given index whose values are going to be permuted
 def permute(theta,permutation):
     a,b = permutation
     TMP=theta[a-1]
     theta[a-1]=theta[b-1]
     theta[b-1]=TMP
     return theta
-    
+
+#Function that returns all the possible permutation in an array of size n
 def transpo_of_size(n):
     tab=[]
     for i in range (1,n):
@@ -37,8 +40,6 @@ def bin_to_dec(b):
         temp=temp//2
     return res
 
-##print(bin_to_dec([1,0,1,1]))
-
 ##Function that builds a 16x16 array of 0s
 def zero_matrix():
     res=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -46,10 +47,17 @@ def zero_matrix():
         res[i]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     return res
 
-##print(zero_matrix())
-
 list_theta=[]
 for i in range(16):
     list_theta.append(Dec_to_Bin(i))
 
-##print(list_theta)
+Ssquare_matrix=zero_matrix()
+
+i=0
+for theta_in in list_theta:
+    for transpo in transpo_of_size(4):
+        theta_out = permute(theta_in,transpo)
+        Ssquare_matrix[i][bin_to_dec(theta_out)]=1
+    i+=1
+
+print(Ssquare_matrix)

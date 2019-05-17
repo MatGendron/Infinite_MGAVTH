@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 def Dec_to_Bin(n):
     tab_bin=[0,0,0,0]
     k=0
@@ -9,3 +11,9 @@ def Dec_to_Bin(n):
         k+=1
     tab_bin.reverse()
     return tab_bin
+
+list_theta=[]
+for i in range(16):
+    list_theta.append(Dec_to_Bin(i))
+
+print(list_theta)

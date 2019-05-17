@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+##Function that builds an array reprensenting the binary corresponding to a given decimal.
 def Dec_to_Bin(n):
     tab_bin=[0,0,0,0]
     k=0

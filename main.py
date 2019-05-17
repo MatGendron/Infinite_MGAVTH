@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+import numpy
+
 ##Function that builds an array reprensenting the binary corresponding to a given decimal.
 def Dec_to_Bin(n):
     tab_bin=[0,0,0,0]
@@ -17,11 +19,12 @@ def Dec_to_Bin(n):
 ##theta is the array where the permutation occurs
 ##permutation is the given index whose values are going to be permuted
 def permute(theta,permutation):
+    new_theta = theta.copy()
     a,b = permutation
-    TMP=theta[a-1]
-    theta[a-1]=theta[b-1]
-    theta[b-1]=TMP
-    return theta
+    tmp=new_theta[a-1]
+    new_theta[a-1]=new_theta[b-1]
+    new_theta[b-1]=tmp
+    return new_theta
 
 #Function that returns all the possible permutation in an array of size n
 def transpo_of_size(n):
@@ -53,11 +56,10 @@ for i in range(16):
 
 Ssquare_matrix=zero_matrix()
 
-i=0
-for theta_in in list_theta:
-    for transpo in transpo_of_size(4):
-        theta_out = permute(theta_in,transpo)
-        Ssquare_matrix[i][bin_to_dec(theta_out)]=1
-    i+=1
+transpo_base=transpo_of_size(4)
 
+for theta_in in list_theta:
+    for transpo in transpo_base:
+        theta_out = permute(theta_in,transpo)
+        Ssquare_matrix[bin_to_dec(theta_in)][bin_to_dec(theta_out)]+=1
 print(Ssquare_matrix)

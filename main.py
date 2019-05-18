@@ -2,6 +2,17 @@
 
 import numpy as np
 
+##Function that prints a matrix
+def print_matrix(M):
+    for l in M:
+        print("[", end="")
+        for i in l:
+            if i != 0:
+                print("%.3f" % i, end=" | ")
+            else:
+                print("     ", end = " | ")
+        print("]")
+
 ##Function that builds an array reprensenting the binary corresponding to a given decimal.
 def Dec_to_Bin(n):
     tab_bin=[0,0,0,0]

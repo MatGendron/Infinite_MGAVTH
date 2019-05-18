@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import numpy
+import numpy as np
 
 ##Function that builds an array reprensenting the binary corresponding to a given decimal.
 def Dec_to_Bin(n):
@@ -62,4 +62,13 @@ for theta_in in list_theta:
     for transpo in transpo_base:
         theta_out = permute(theta_in,transpo)
         Ssquare_matrix[bin_to_dec(theta_in)][bin_to_dec(theta_out)]+=1
-print(Ssquare_matrix)
+
+S = np.array(Ssquare_matrix)
+
+D,P = np.linalg.eig(S)
+
+##print(D)
+
+temp = np.diag(D)
+
+print(temp)

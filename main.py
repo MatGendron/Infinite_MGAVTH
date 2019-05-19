@@ -78,10 +78,45 @@ def spin(base):
     D,P = np.linalg.eig(S)
     psi=P[0]
     psi_alt = np.reshape(psi,(16,1))
-    Pavg = np.true_divide(S,16)
+    Pavg = np.true_divide(S,6)
     res = np.dot(psi,np.dot(Pavg,psi_alt))
     return res
 
+print("Values for average Pij:")
+print("For S²:")
 print(spin(transpo_base))
+print("For H with linear molecule:")
 print(spin([[1,2],[2,3],[3,4]]))
+print("For H with squared molecule:")
 print(spin([[1,2],[2,3],[3,4],[1,4]]))
+
+def pij_matrix(transpo):
+    pij=zero_matrix()
+    for theta_in in list_theta:
+        theta_out=permute(theta_in,transpo)
+        pij[bin_to_dec(theta_in)][bin_to_dec(theta_out)]+=1
+    return np.array(pij)
+
+def spin_alt(base):
+    for theta_in in list_theta:
+        for transpo in base:
+            theta_out = permute(theta_in,transpo)
+            Ssquare_matrix[bin_to_dec(theta_in)][bin_to_dec(theta_out)]+=1
+    S = np.array(Ssquare_matrix)
+    D,P = np.linalg.eig(S)
+    psi=P[0]
+    psi_alt = np.reshape(psi,(16,1))
+    for transpo in base:
+        pij = pij_matrix(transpo)
+        res = np.dot(psi,np.dot(pij,psi_alt))
+        print(transpo)
+        print(res)
+    return
+
+print("Values with separated Pij:")
+print("For S²:")
+spin_alt(transpo_base)
+print("For H with linear molecule:")
+spin_alt([[1,2],[2,3],[3,4]])
+print("For H with squared molecule:")
+spin_alt([[1,2],[2,3],[3,4],[1,4]])

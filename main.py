@@ -58,17 +58,19 @@ Ssquare_matrix=zero_matrix()
 
 transpo_base=transpo_of_size(4)
 
-for theta_in in list_theta:
-    for transpo in transpo_base:
-        theta_out = permute(theta_in,transpo)
-        Ssquare_matrix[bin_to_dec(theta_in)][bin_to_dec(theta_out)]+=1
+def spin(base):
+    for theta_in in list_theta:
+        for transpo in base:
+            theta_out = permute(theta_in,transpo)
+            Ssquare_matrix[bin_to_dec(theta_in)][bin_to_dec(theta_out)]+=1
+    S = np.array(Ssquare_matrix)
+    D,P = np.linalg.eig(S)
+    psi=P[0]
+    psi_alt = np.reshape(psi,(16,1))
+    Pavg = np.true_divide(S,16)
+    res = np.dot(psi,np.dot(Pavg,psi_alt))
+    return res
 
-S = np.array(Ssquare_matrix)
-
-D,P = np.linalg.eig(S)
-
-##print(D)
-
-temp = np.diag(D)
-
-print(temp)
+print(spin(transpo_base))
+print(spin([[1,2],[2,3],[3,4]]))
+print(spin([[1,2],[2,3],[3,4],[1,4]]))

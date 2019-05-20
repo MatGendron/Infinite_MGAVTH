@@ -65,20 +65,19 @@ list_theta=[]
 for i in range(16):
     list_theta.append(Dec_to_Bin(i))
 
-Ssquare_matrix=zero_matrix()
-
 transpo_base=transpo_of_size(4)
 
 def spin(base):
+    Ssquare_matrix=zero_matrix()
     for theta_in in list_theta:
         for transpo in base:
             theta_out = permute(theta_in,transpo)
             Ssquare_matrix[bin_to_dec(theta_in)][bin_to_dec(theta_out)]+=1
     S = np.array(Ssquare_matrix)
     D,P = np.linalg.eig(S)
-    psi=P[0]
+    psi=P[:,0]
     psi_alt = np.reshape(psi,(16,1))
-    Pavg = np.true_divide(S,6)
+    Pavg = np.true_divide(S,len(base))
     res = np.dot(psi,np.dot(Pavg,psi_alt))
     return res
 
@@ -98,13 +97,14 @@ def pij_matrix(transpo):
     return np.array(pij)
 
 def spin_alt(base):
+    Ssquare_matrix=zero_matrix()
     for theta_in in list_theta:
         for transpo in base:
             theta_out = permute(theta_in,transpo)
             Ssquare_matrix[bin_to_dec(theta_in)][bin_to_dec(theta_out)]+=1
     S = np.array(Ssquare_matrix)
     D,P = np.linalg.eig(S)
-    psi=P[0]
+    psi=P[:,0]
     psi_alt = np.reshape(psi,(16,1))
     for transpo in base:
         pij = pij_matrix(transpo)

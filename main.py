@@ -13,7 +13,7 @@ def print_matrix(M):
                 print("     ", end = " | ")
         print("]")
 
-##Function that builds an array reprensenting the binary corresponding to a given decimal.
+##Function that builds an array reprensenting the binary corresponding to a given decimal
 def Dec_to_Bin(n):
     tab_bin=[0,0,0,0]
     k=0
@@ -67,14 +67,18 @@ for i in range(16):
 
 transpo_base=transpo_of_size(4)
 
+##First developped function that does the calculus using the average of all Pij, wrong function (?)
 def spin(base):
+    ##Builds the matrix sum of Pij according to given base of transpositions
     Ssquare_matrix=zero_matrix()
     for theta_in in list_theta:
         for transpo in base:
             theta_out = permute(theta_in,transpo)
             Ssquare_matrix[bin_to_dec(theta_in)][bin_to_dec(theta_out)]+=1
     S = np.array(Ssquare_matrix)
+    ##Getting the eigenvectors of the sum matrix
     D,P = np.linalg.eig(S)
+    ##Building the necessary matrix and calculating the average spins
     psi=P[:,0]
     psi_alt = np.reshape(psi,(16,1))
     Pavg = np.true_divide(S,len(base))
@@ -89,6 +93,7 @@ print(spin([[1,2],[2,3],[3,4]]))
 print("For H with squared molecule:")
 print(spin([[1,2],[2,3],[3,4],[1,4]]))
 
+##Function that gives the Pij matrix for a given transposition
 def pij_matrix(transpo):
     pij=zero_matrix()
     for theta_in in list_theta:
@@ -96,14 +101,18 @@ def pij_matrix(transpo):
         pij[bin_to_dec(theta_in)][bin_to_dec(theta_out)]+=1
     return np.array(pij)
 
+##Function that calculates the spin for each transpotion in the given base
 def spin_alt(base):
+    ##Builds the matrix sum of Pij according to given base of transpositions
     Ssquare_matrix=zero_matrix()
     for theta_in in list_theta:
         for transpo in base:
             theta_out = permute(theta_in,transpo)
             Ssquare_matrix[bin_to_dec(theta_in)][bin_to_dec(theta_out)]+=1
     S = np.array(Ssquare_matrix)
+    ##Getting the eigenvectors of the sum matrix
     D,P = np.linalg.eig(S)
+    ##Building the necessary matrix and calculating the spin for each Pij
     psi=P[:,0]
     psi_alt = np.reshape(psi,(16,1))
     for transpo in base:

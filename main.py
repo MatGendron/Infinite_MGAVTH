@@ -113,7 +113,13 @@ def spin(base):
     ##Getting the eigenvectors of the sum matrix
     D,P = np.linalg.eig(S)
     ##Building the necessary matrix and calculating the spin for each Pij
-    psi=P[:,0]
+    min = D[0]
+    x=0
+    for i in range(len(D)):
+        if D[i]<min:
+            min=D[i]
+            x=i
+    psi=P[:,x]
     psi_alt = np.reshape(psi,(16,1))
     for transpo in base:
         pij = pij_matrix(transpo)
@@ -130,3 +136,66 @@ spin([[1,2],[2,3],[3,4]])
 print("\nFor H with squared molecule:")
 spin([[1,2],[2,3],[3,4],[1,4]])
 
+new_theta=[]
+for theta in list_theta:
+    x=0
+    for i in theta:
+        x+=i
+    if x==2:
+        new_theta+=[theta,]
+
+def zero_matrix_6():
+    res=[0,0,0,0,0,0]
+    for i in range(6):
+        res[i]=[0,0,0,0,0,0]
+    return res
+
+def theta_indice(theta_in):
+    for i in range(len(new_theta)):
+        if new_theta[i]==theta_in:
+            return i
+    return (-1)
+
+##Function that gives the Pij matrix for a given transposition
+def pij_matrix_6(transpo):
+    pij=zero_matrix_6()
+    for theta_in in list_theta:
+        theta_out=permute(theta_in,transpo)
+        pij[theta_indice(theta_in)][theta_indice(theta_out)]+=1
+    return np.array(pij)
+
+##Function that calculates the spin for each transpotion in the given base
+def spin_2(base):
+    ##Builds the matrix sum of Pij according to given base of transpositions
+    Ssquare_matrix=zero_matrix_6()
+    for theta_in in new_theta:
+        for transpo in base:
+            theta_out = permute(theta_in,transpo)
+            Ssquare_matrix[theta_indice(theta_in)][theta_indice(theta_out)]+=1
+    S = np.array(Ssquare_matrix)
+    print(S)
+    ##Getting the eigenvectors of the sum matrix
+    D,P = np.linalg.eig(S)
+    ##Building the necessary matrix and calculating the spin for each Pij
+    min = D[0]
+    x=0
+    for i in range(len(D)):
+        if D[i]<min:
+            min=D[i]
+            x=i
+    psi=P[:,x]
+    psi_alt = np.reshape(psi,(6,1))
+    for transpo in base:
+        pij = pij_matrix_6(transpo)
+        res = np.dot(psi,np.dot(pij,psi_alt))
+        print("\nTransposition: " + str(transpo))
+        print("Result: "+str(res[0]))
+    return
+
+print("---------------\nValues with separated Pij:")
+print("For S²:")
+spin_2(transpo_base)
+print("\nFor H with linear molecule:")
+spin_2([[1,2],[2,3],[3,4]])
+print("\nFor H with squared molecule:")
+spin_2([[1,2],[2,3],[3,4],[1,4]])

@@ -68,7 +68,7 @@ for i in range(16):
 transpo_base=transpo_of_size(4)
 
 ##First developped function that does the calculus using the average of all Pij, wrong function (?)
-def spin(base):
+def spin_avg_error(base):
     ##Builds the matrix sum of Pij according to given base of transpositions
     Ssquare_matrix=zero_matrix()
     for theta_in in list_theta:
@@ -83,15 +83,15 @@ def spin(base):
     psi_alt = np.reshape(psi,(16,1))
     Pavg = np.true_divide(S,len(base))
     res = np.dot(psi,np.dot(Pavg,psi_alt))
-    return res
+    return res[0]
 
-print("Values for average Pij:")
+print("Values for average Pij [wrong function it just shows a first attempt at solving the problem]:")
 print("For S²:")
-print(spin(transpo_base))
-print("For H with linear molecule:")
-print(spin([[1,2],[2,3],[3,4]]))
-print("For H with squared molecule:")
-print(spin([[1,2],[2,3],[3,4],[1,4]]))
+print(spin_avg_error(transpo_base))
+print("\nFor H with linear molecule:")
+print(spin_avg_error([[1,2],[2,3],[3,4]]))
+print("\nFor H with squared molecule:")
+print(spin_avg_error([[1,2],[2,3],[3,4],[1,4]]))
 
 ##Function that gives the Pij matrix for a given transposition
 def pij_matrix(transpo):
@@ -102,7 +102,7 @@ def pij_matrix(transpo):
     return np.array(pij)
 
 ##Function that calculates the spin for each transpotion in the given base
-def spin_alt(base):
+def spin(base):
     ##Builds the matrix sum of Pij according to given base of transpositions
     Ssquare_matrix=zero_matrix()
     for theta_in in list_theta:
@@ -118,14 +118,15 @@ def spin_alt(base):
     for transpo in base:
         pij = pij_matrix(transpo)
         res = np.dot(psi,np.dot(pij,psi_alt))
-        print(transpo)
-        print(res)
+        print("\nTransposition: " + str(transpo))
+        print("Result: "+str(res[0]))
     return
 
-print("Values with separated Pij:")
+print("---------------\nValues with separated Pij:")
 print("For S²:")
-spin_alt(transpo_base)
-print("For H with linear molecule:")
-spin_alt([[1,2],[2,3],[3,4]])
-print("For H with squared molecule:")
-spin_alt([[1,2],[2,3],[3,4],[1,4]])
+spin(transpo_base)
+print("\nFor H with linear molecule:")
+spin([[1,2],[2,3],[3,4]])
+print("\nFor H with squared molecule:")
+spin([[1,2],[2,3],[3,4],[1,4]])
+
